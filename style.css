@@ -1,0 +1,488 @@
+/* === Google Fonts === */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap');
+
+/* === CSS Variables === */
+:root {
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Open Sans', sans-serif;
+
+    /* Light Theme (Default) */
+    --bg-light: #ffffff;
+    --text-light: #333333;
+    --primary-light: #ff6600; /* Orange */
+    --primary-dark-light: #e65c00;
+    --secondary-light: #000000; /* Black for contrast */
+    --accent-light: #ffA500; /* Lighter Orange */
+    --card-bg-light: #ffffff;
+    --text-muted-light: #666666;
+
+    /* Dark Theme */
+    --bg-dark: #1a1a1a;
+    --text-dark: #f0f0f0;
+    --primary-dark-theme: #ff7f50; /* Coral - a bit softer orange for dark theme */
+    --primary-dark-dark: #ff6347; /* Tomato */
+    --secondary-dark: #f0f0f0; /* White for contrast on dark */
+    --accent-dark: #ffa07a; /* Light Salmon */
+    --card-bg-dark: #2c2c2c;
+    --text-muted-dark: #aaaaaa;
+
+    /* Current Theme Variables (will be overridden by JS) */
+    --current-bg: var(--bg-light);
+    --current-text: var(--text-light);
+    --current-primary: var(--primary-light);
+    --current-primary-darker: var(--primary-dark-light);
+    --current-secondary: var(--secondary-light);
+    --current-accent: var(--accent-light);
+    --current-card-bg: var(--card-bg-light);
+    --current-text-muted: var(--text-muted-light);
+
+
+    --shadow-main: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --border-radius-main: 10px;
+    --transition-main: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
+}
+
+/* === Basic Reset & Global Styles === */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: var(--font-body);
+    background-color: var(--current-bg);
+    color: var(--current-text);
+    line-height: 1.7;
+    overflow-x: hidden;
+    transition: background-color var(--transition-main), color var(--transition-main);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--current-text); /* Headings also use current text color */
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); text-transform: uppercase; letter-spacing: 1px;}
+h2 { font-size: clamp(2rem, 5vw, 3rem); text-transform: uppercase; }
+h3 { font-size: clamp(1.5rem, 4vw, 2rem); }
+
+p { margin-bottom: 1rem; color: var(--current-text-muted); }
+a { text-decoration: none; color: var(--current-primary); transition: color var(--transition-main); }
+a:hover { color: var(--current-primary-darker); }
+img { max-width: 100%; display: block; }
+ul { list-style: none; }
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+section { padding: 80px 20px; overflow: hidden;} /* Added overflow for AOS */
+
+/* === Buttons === */
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: var(--current-primary);
+    color: var(--current-bg); /* Contrast text for button */
+    border-radius: 50px; /* Pill shape */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all var(--transition-main);
+    border: 2px solid var(--current-primary);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.btn:hover {
+    background-color: var(--current-primary-darker);
+    border-color: var(--current-primary-darker);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+.btn-secondary {
+    background-color: var(--current-secondary);
+    color: var(--current-bg);
+    border-color: var(--current-secondary);
+}
+.btn-secondary:hover {
+    background-color: var(--current-text); /* Darken secondary */
+    border-color: var(--current-text);
+}
+
+
+/* === Navbar === */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--current-secondary); /* Darker navbar */
+    color: var(--current-bg); /* Light text on dark navbar */
+    padding: 15px 30px; /* Increased padding */
+    height: 70px; /* Fixed height */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-main);
+    transition: background-color var(--transition-main);
+}
+.navbar .logo {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--current-primary); /* Primary color for logo */
+    letter-spacing: 1px;
+}
+.navbar ul { display: flex; align-items: center; }
+.navbar ul li { margin: 0 15px; }
+.navbar ul li a {
+    color: var(--current-bg);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    padding-bottom: 5px;
+}
+.navbar ul li a::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 0; height: 2px; background-color: var(--current-primary);
+    transition: width var(--transition-main);
+}
+.navbar ul li a:hover::after, .navbar ul li a.active::after { width: 100%; }
+.navbar ul li a:hover, .navbar ul li a.active { color: var(--current-primary); }
+
+.theme-toggle-btn, .menu-toggle-btn {
+    background: none; border: none; font-size: 1.5rem;
+    color: var(--current-bg); cursor: pointer; margin-left: 15px;
+    transition: color var(--transition-main), transform var(--transition-fast);
+}
+.theme-toggle-btn:hover, .menu-toggle-btn:hover {
+    color: var(--current-primary);
+    transform: scale(1.1);
+}
+.menu-toggle-btn { display: none; } /* Hidden by default */
+
+
+/* === Hero Section === */
+.hero {
+    background: url('Place Your Image Here (Double Click to Edit).jpg') no-repeat center center/cover;
+    color: var(--current-bg); /* Light text for hero */
+    text-align: left; /* Align text left */
+    padding: 150px 5%; /* Padding using percentage */
+    min-height: 80vh; /* Use min-height */
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.hero::before { /* Dark overlay for better text readability */
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to right, rgba(0,0,0,0.8) 30%, rgba(0,0,0,0.3) 70%, transparent);
+    z-index: 0;
+}
+.hero-content {
+    position: relative; z-index: 1;
+    max-width: 600px;
+}
+.hero-content h1 {
+    color: var(--current-bg); /* White heading */
+    font-size: clamp(3rem, 8vw, 6rem); /* Larger, responsive heading */
+    margin-bottom: 20px;
+    font-weight: 900;
+    line-height: 1.1;
+}
+.hero-content p {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    margin-bottom: 30px; /* Increased margin */
+    color: rgba(255,255,255,0.9);
+    max-width: 500px;
+}
+.hero-content .btn {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    padding: 15px 35px; /* Larger button */
+}
+
+/* === Dance Tour Section === */
+.dance-tour {
+    text-align: center;
+    background-color: var(--current-primary);
+    color: var(--current-bg);
+    padding: 80px 20px;
+}
+.dance-tour h2 { color: var(--current-bg); }
+.dance-tour > p { color: rgba(255,255,255,0.8); max-width: 700px; margin: 0 auto 40px; }
+.dance-tour .cards {
+    display: grid; /* Use grid for better control */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px; /* Increased gap */
+}
+.card { /* General card styling */
+    background-color: var(--current-card-bg);
+    color: var(--current-text);
+    padding: 25px;
+    border-radius: var(--border-radius-main);
+    text-align: center;
+    box-shadow: var(--shadow-main);
+    transition: transform var(--transition-main), box-shadow var(--transition-main);
+}
+.card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+.card img {
+    width: 100%;
+    height: 250px; /* Fixed height for tour cards */
+    object-fit: cover;
+    border-radius: var(--border-radius-main) var(--border-radius-main) 0 0; /* Round top corners */
+    margin-bottom: 15px;
+}
+.card h3 { margin: 15px 0 10px; font-size: 1.6rem; }
+.card p { font-size: 0.95rem; color: var(--current-text-muted); }
+
+/* === Pricing Section === */
+.pricing {
+    background-color: var(--current-secondary); /* Dark background */
+    color: var(--current-bg); /* Light text */
+    padding: 80px 20px;
+}
+.pricing h2 { color: var(--current-bg); }
+.pricing > p { color: rgba(255,255,255,0.8); max-width: 700px; margin: 0 auto 40px; }
+.pricing-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+.pricing .card { /* Specific styling for pricing cards */
+    background-color: var(--current-accent); /* Accent color for pricing cards */
+    color: var(--current-secondary); /* Dark text on accent */
+}
+.pricing .card .icon { font-size: 2.5rem; margin-bottom: 15px; color: var(--current-secondary); }
+.pricing .card h3 { font-size: 1.8rem; color: var(--current-secondary); }
+.pricing .card p { font-size: 1rem; color: var(--current-secondary); opacity: 0.9;}
+.pricing .card .price { font-size: 2.2rem; font-weight: 900; margin-top: 15px; color: var(--current-secondary); }
+
+/* === Amazing Dance & Best Dance Sections === */
+.amazing-dance, .best-dance {
+    display: flex;
+    padding: 80px 5%;
+    background-color: var(--current-primary);
+    color: var(--current-bg);
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap; /* Allow wrapping */
+}
+.best-dance { background-color: var(--current-accent); color: var(--current-secondary); } /* Different bg for variation */
+
+.dance-content-wrapper { /* New wrapper for flex layout */
+    display: flex;
+    flex: 1;
+    gap: 40px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.amazing-dance .dance-content-wrapper { flex-direction: row; }
+.best-dance .dance-content-wrapper { flex-direction: row-reverse; } /* Image on right */
+
+.dance-image { flex: 1 1 500px; min-width: 300px; }
+.dance-image img { width: 100%; border-radius: var(--border-radius-main); box-shadow: var(--shadow-main); }
+.dance-text { flex: 1 1 400px; min-width: 300px; }
+.dance-text h2 { text-align: left; color: inherit; } /* Inherit color from parent section */
+.dance-text p { text-align: left; font-size: 1.1rem; color: inherit; opacity: 0.9;}
+.dance-text .btn {
+    background-color: var(--current-secondary);
+    color: var(--current-bg);
+    border-color: var(--current-secondary);
+}
+.best-dance .dance-text .btn {
+    background-color: var(--current-primary);
+    color: var(--current-bg);
+    border-color: var(--current-primary);
+}
+
+/* === Statistics Section === */
+.statistics {
+    background-color: var(--current-secondary);
+    color: var(--current-bg);
+    padding: 80px 20px;
+    text-align: center;
+}
+.statistics h2 { color: var(--current-bg); }
+.statistics > p { color: rgba(255,255,255,0.8); max-width: 700px; margin: 0 auto 40px; }
+.statistics .stats {
+    display: flex;
+    justify-content: space-around; /* Better distribution */
+    gap: 30px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+.statistics .stat { text-align: center; flex: 1; min-width: 200px; }
+.statistics .stat .counter { /* Changed h3 to a span with class counter */
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-weight: 900;
+    margin-bottom: 5px;
+    color: var(--current-primary);
+    display: block;
+}
+.statistics .stat p { font-size: 1.3rem; text-transform: uppercase; letter-spacing: 1px; color: var(--current-bg); }
+
+/* === HRO (Testimonial/Quote) Section === */
+.hro {
+    position: relative;
+    background-image: url('Place Your Image Here (Double Click to Edit)1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Parallax effect */
+    text-align: center;
+    color: var(--current-bg);
+    padding: 100px 20px; /* Increased padding */
+    min-height: 60vh; /* Ensure it takes significant height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.hro::before {
+    content: ""; position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(var(--primary-rgb, 255, 102, 0), 0.7); /* Use RGB var for opacity */
+    z-index: 0;
+}
+.hro-content { /* Renamed from hro-contnt */
+    position: relative; z-index: 1;
+    max-width: 700px;
+}
+.hro-content p {
+    font-size: clamp(1.2rem, 3vw, 1.8rem); /* Responsive quote text */
+    color: var(--current-bg);
+    margin-bottom: 20px;
+    font-style: italic;
+    line-height: 1.6;
+}
+.hro-content h2.author-name { /* Added class for author */
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--current-bg);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* === Subscribe Section === */
+.subscribe {
+    background-color: var(--current-primary);
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--current-bg);
+}
+.subscribe h2 { color: var(--current-bg); }
+.subscribe p { color: rgba(255,255,255,0.8); max-width: 700px; margin: 0 auto 30px;}
+.subscribe-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+.subscribe-form input {
+    padding: 15px; /* Increased padding */
+    font-size: 1rem;
+    border: none;
+    border-radius: var(--border-radius-main);
+    flex-grow: 1; /* Input takes available space */
+    min-width: 250px; /* Minimum width for input */
+    background-color: rgba(255,255,255,0.2);
+    color: var(--current-bg);
+}
+.subscribe-form input::placeholder { color: rgba(255,255,255,0.7); }
+.subscribe-form button {
+    padding: 15px 30px;
+    font-size: 1rem;
+    color: var(--current-primary);
+    background-color: var(--current-bg);
+    border: none;
+    border-radius: var(--border-radius-main);
+    cursor: pointer;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: background-color var(--transition-main), color var(--transition-main);
+}
+.subscribe-form button:hover {
+    background-color: var(--current-secondary);
+    color: var(--current-bg);
+}
+
+/* === Footer === */
+.footer {
+    background-color: var(--current-secondary);
+    color: var(--current-bg);
+    padding: 60px 20px 30px; /* Increased padding */
+}
+.footer-content {
+    display: grid; /* Use grid for footer columns */
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    margin-bottom: 30px;
+}
+.footer-column h3 {
+    margin-bottom: 15px;
+    font-size: 1.3rem; /* Slightly larger */
+    color: var(--current-primary); /* Primary color for footer headings */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.footer-column ul li { margin-bottom: 8px; }
+.footer-column ul li a { color: rgba(255,255,255,0.8); font-size: 0.95rem; }
+.footer-column ul li a:hover { color: var(--current-primary); padding-left: 5px; }
+.footer-column p { font-size: 0.95rem; color: rgba(255,255,255,0.8); }
+.footer-column .social-icons a {
+    color: rgba(255,255,255,0.8);
+    margin-right: 15px; /* Increased margin */
+    font-size: 1.6rem; /* Larger icons */
+    transition: color var(--transition-main), transform var(--transition-fast);
+}
+.footer-column .social-icons a:hover { color: var(--current-primary); transform: scale(1.1) rotate(5deg); }
+.footer-bottom-text {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+}
+
+/* === AOS Animation Base (from script.js) === */
+[data-aos] {
+    transition-property: transform, opacity;
+}
+
+
+/* === Responsive Adjustments === */
+@media (max-width: 992px) { /* Tablets */
+    .hero-content { text-align: center; padding: 0 10%; } /* Center hero text on tablets */
+    .hero-content h1, .hero-content p, .hero-content .btn { text-align: center; margin-right: 0; padding-right: 0;}
+    .dance-content-wrapper { flex-direction: column !important; /* Stack image and text */ text-align: center; }
+    .dance-text { text-align: center !important; margin-top: 20px; }
+    .dance-text h2, .dance-text p { text-align: center !important; }
+}
+
+@media (max-width: 768px) { /* Mobile */
+    .navbar { flex-direction: row; /* Keep logo and toggle on one line */ justify-content: space-between; }
+    .menu-toggle-btn { display: block; }
+    .navbar ul {
+        display: none; flex-direction: column;
+        position: absolute; top: 70px; left: 0;
+        width: 100%; background-color: var(--current-secondary);
+        padding: 15px 0; box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        text-align: center;
+    }
+    .navbar ul.active { display: flex; } /* Show when active */
+    .navbar ul li { margin: 10px 0; }
+
+    .hero { padding: 80px 20px; min-height: 60vh; }
+    .dance-tour .cards, .pricing-cards { grid-template-columns: 1fr; } /* Single column for cards */
+    .amazing-dance, .best-dance { padding: 50px 20px; }
+    .statistics .stats { flex-direction: column; gap: 20px; }
+    .hro { padding: 80px 20px; min-height: 50vh;}
+    .subscribe-form input { width: 100%; margin-bottom: 10px; }
+    .footer-content { grid-template-columns: 1fr; text-align: center; }
+    .footer-column { margin-bottom: 30px; }
+}
